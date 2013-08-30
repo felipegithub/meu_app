@@ -9,7 +9,7 @@ set :deploy_to, "/home/#{user}/apps/#{application}" #Local no servidor onde vai 
 set :use_sudo, false # Não executar os Comandos com 'sudo' no inicio
 
 set :scm, "git" # Tipo: git, bitcucket...
-set :repository, "git@github.com:felipegithub/meu_app.git" #URL do repositorio
+set :repository, "https://github.com/felipegithub/meu_app.git" #URL do repositorio
 set :branch, "master"
 
 set :rvm_ruby_string, :local # use the same ruby as used locally for deployment
@@ -29,6 +29,7 @@ namespace :deploy do
 	#Cria-se tarefas, como se fossem metodos que vão ser executados conforme o deploy ocorre
 	task :setup_inicial_nginx, roles: :app do
 		sudo "ln -nfs #{current_path}/config/nginx_app.conf /etc/nginx/sites-enabled/#{application}"
+		sudo "service restart nginx"
 		puts "Criou o Link do arquivo de configuração do ngingx"
 	end
 	
@@ -39,12 +40,10 @@ namespace :deploy do
 
 	task :start_server, roles: :app do
 		run "cd #{current_path}; rails s -e production"
-		sudo "service nginx restart"
-		puts "Iniciando o servidor"
 	end
 
 	after "deploy:setup", "deploy:setup_inicial_nginx"
-	after "deploy", "deploy:setup_db"
-	after "deploy:setup_db", "deploy:start_server"
+	after "deploy:setup_inicial_nginx", "deploy:setup_db"
+	after "deploy:cold", "deploy:start_server"
 	
 end
