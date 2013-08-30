@@ -29,7 +29,7 @@ namespace :deploy do
 	#Cria-se tarefas, como se fossem metodos que vão ser executados conforme o deploy ocorre
 	task :setup_inicial_nginx, roles: :app do
 		sudo "ln -nfs #{current_path}/config/nginx_app.conf /etc/nginx/sites-enabled/#{application}"
-		sudo "service restart nginx"
+		sudo "service nginx restart"
 		puts "Criou o Link do arquivo de configuração do ngingx"
 	end
 	
