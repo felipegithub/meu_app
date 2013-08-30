@@ -1,7 +1,7 @@
 require "bundler/capistrano"
 require "rvm/capistrano"
 
-server "10.12.0.69", :web, :app, :db, primary: true
+server "10.12.0.17", :web, :app, :db, primary: true
 
 set :application, "meu_app" # Nome da app
 set :user, "fabsoft" # usuario do SERVIDOR
@@ -38,6 +38,7 @@ namespace :deploy do
 	end
 
 	after "deploy:setup", "deploy:setup_inicial_nginx"
+	after "deploy:cold", "deploy:start_server"
 	after "deploy", "deploy:start_server"
 	
 end
