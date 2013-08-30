@@ -38,6 +38,6 @@ namespace :deploy do
 	end
 
 	after "deploy:setup", "deploy:setup_inicial_nginx"
-	after "deploy:cold", "deploy:start_server"
+	after "deploy", "deploy:start_server"
 	
 end
