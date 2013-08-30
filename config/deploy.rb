@@ -32,18 +32,12 @@ namespace :deploy do
 		sudo "service nginx restart"
 		puts "Criou o Link do arquivo de configuração do ngingx"
 	end
-	
-	task :setup_db, roles: :app do
-		run "cd #{current_path}; rake db:create RAILS_ENV=#{rails_env}"
-		puts "Banco foi criado"
-	end
 
 	task :start_server, roles: :app do
 		run "cd #{current_path}; rails s -e production"
 	end
 
 	after "deploy:setup", "deploy:setup_inicial_nginx"
-	after "deploy:setup_inicial_nginx", "deploy:setup_db"
 	after "deploy:cold", "deploy:start_server"
 	
 end
