@@ -1,5 +1,6 @@
-require "bundler/capistrano"
 require "rvm/capistrano"
+require "bundler/capistrano"
+
 
 server "10.12.0.17", :web, :app, :db, primary: true
 
