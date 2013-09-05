@@ -24,12 +24,31 @@ ssh_options[:forward_agent] = true
 after "deploy", "deploy:cleanup"
 
 #Definição das 'Tarefas para Deploy:'
+namespace :deploy do
+ 
+	#Cria-se tarefas, como se fossem metodos que vão ser executados conforme o deploy ocorre
+  task :setup_inicial_nginx, roles: :app do
+    sudo "ln -nfs #{current_path}/config/nginx_app.conf /etc/nginx/sites-enabled/#{application}"
+    sudo "service nginx restart"
+    puts "Criou o Link do arquivo de configuração do ngingx"
+  end
+ 
+  task :start_server, roles: :app do
+    run "cd #{current_path}; rails s -e production"
+	end
 
+  after "deploy:setup", "deploy:setup_inicial_nginx"
+  after "deploy:cold", "deploy:start_server"
+  after "deploy", "deploy:start_server" 
+
+end
 
 namespace :diga do
-	task :ola_mundo, roles: :app do
-		puts "Ola mundo"
+  task :ola_mundo, roles: :app do
+    puts "Ola mundo"
 	end
 end
+
+
 
 
