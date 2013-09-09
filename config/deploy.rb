@@ -44,12 +44,12 @@ namespace :deploy do
 
 end
 
-namespace :diga do
-  task :ola_mundo, roles: :app do
-    puts "Ola mundo"
-	end
-end
+namespace :fale do
+  task :ola, roles: :app do
+    puts "Ola"
+  end
 
+end
 
 
 
